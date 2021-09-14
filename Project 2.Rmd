@@ -4,6 +4,8 @@ output: html_document
 ---
 
 ```{r, include=FALSE}
-survey_fresh = read.csv("DATA1001_survey")
-str(survey_fresh)
+#survey_fresh = read.csv("DATA1001_survey")
+#str(survey_fresh)
 ```
+
+Hello Juno and Sarah
