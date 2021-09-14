@@ -3,9 +3,9 @@ title: "Project 2"
 output: html_document
 ---
 
-```{r, include=FALSE}
-#survey_fresh = read.csv("DATA1001_survey")
-#str(survey_fresh)
+```{r}
+survey_fresh = read.csv("DATA1001_survey.csv")
+str(survey_fresh)
 ```
 
 Hello and Sarah
