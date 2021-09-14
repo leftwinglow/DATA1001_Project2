@@ -4,9 +4,42 @@ output: html_document
 ---
 
 ```{r}
+
 survey_fresh = read.csv("DATA1001_survey.csv")
 str(survey_fresh)
 ```
+
+```{r, message = F}
+# Cleaned our data
+
+survey = read.csv("DATA1001_survey.csv")
+str(survey)
+
+library(tidyverse)
+
+survey_fresh = survey %>%
+                    rename(
+                    
+                      `Age` = 2,
+                      `LGA` = 3,
+                      `opinion on lockdown` = 4,
+                      `following rules` = 5,
+                      `Cohabitation` = 6,
+                      `Income` = 7,
+                      `Lockdown time spent outdoors` = 8, 
+                      `Lockdown time spent exercising` = 9,
+                      `Low mood` = 10,
+                      `Happy mood` = 11,
+                      `Hours technology` = 12
+                       ) 
+                   
+str(survey_fresh)
+
+```
+
+```
+
+
 
 Hello and Sarah
 Hi and! Nice to meet you!
