@@ -8,4 +8,4 @@ output: html_document
 #str(survey_fresh)
 ```
 
-Hello Juno and Sarah
+Hello and Sarah
