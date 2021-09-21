@@ -1,19 +1,27 @@
 ---
-title: "Project 2"
-output: html_document
+title: "Lockdown Opinions & Lockdown Behaviours"
+subtitle: "DATA10001 Project 2"
+author: "510516927, "
+output:
+  html_document:
+    code_download: true # embed .Rmd file
+    number_sections: true 
+    theme: lumen # theme the doc
+    highlight: tango # theme syntax colouring
+    fig_caption: yes
+    self_contained: yes
+    code_folding: hide
 ---
 
-```{r}
-
+```{r, echo = F}
+# Read the survey data csv
 survey_fresh = read.csv("DATA1001_survey.csv")
-str(survey_fresh)
 ```
 
 ```{r, message = F}
 # Cleaned our data
 
 survey = read.csv("DATA1001_survey.csv")
-str(survey)
 
 library(tidyverse)
 
@@ -22,8 +30,8 @@ survey_fresh = survey %>%
                     
                       `Age` = 2,
                       `LGA` = 3,
-                      `opinion on lockdown` = 4,
-                      `following rules` = 5,
+                      `Opinion on lockdown` = 4,
+                      `Rule adherance` = 5,
                       `Cohabitation` = 6,
                       `Income` = 7,
                       `Lockdown time spent outdoors` = 8, 
@@ -32,20 +40,22 @@ survey_fresh = survey %>%
                       `Happy mood` = 11,
                       `Hours technology` = 12
                        ) 
-                   
-str(survey_fresh)
 
 ```
-
-```
-
-
-
-Hello and Sarah
-Hi and! Nice to meet you!
-blah blah blah blah
 
 ```{r}
-# This is a comment - Nonie
+str(survey_fresh)
 ```
+
+```{r}
+library(ggplot2)
+
+ex = survey_fresh$"Lockdown time spent outdoors"
+lm = survey_fresh$"Happy mood"
+
+ggplot(survey_fresh, aes(x = lm, y = ex)) +
+  geom_point()
+```
+
+
 
