@@ -14,8 +14,6 @@ output:
 ---
 
 ```{r, echo = F}
-# Read the survey data csv
-survey_fresh = read.csv("DATA1001_survey.csv")
 ```
 
 ```{r, message = F}
@@ -50,7 +48,7 @@ str(survey_fresh)
 ```{r}
 library(ggplot2)
 
-ex = survey_fresh$"Lockdown time spent outdoors"
+ex = survey_fresh$"Hours technology"
 lm = survey_fresh$"Happy mood"
 
 ggplot(survey_fresh, aes(x = lm, y = ex)) +

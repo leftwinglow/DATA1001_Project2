@@ -1,0 +1,127 @@
+---
+title: "Project 2"
+output: html_document
+---
+
+```{r}
+survey_fresh = read.csv("DATA1001_survey.csv")
+str(survey_fresh)
+```
+
+```{r, message = F}
+survey = read.csv("DATA1001_survey.csv")
+#str(survey)
+
+library(tidyverse)
+
+survey_fresh = survey %>%
+                    rename(
+                      `Age` = 2,
+                      `LGA` = 3,
+                      `Opinion on lockdown` = 4,
+                      `Following rules` = 5,
+                      `Cohabitation` = 6,
+                      `Income` = 7,
+                      `Lockdown time outdoors` = 8, 
+                      `Lockdown time exercising` = 9,
+                      `Exercise hours` = 10,
+                      `Low mood` = 11,
+                      `Happy mood` = 12,
+                      `Hours technology` = 13
+                       ) 
+
+survey_fresh$`Opinion on lockdown` = factor(survey_fresh$`Opinion on lockdown`)
+survey_fresh$`Lockdown time outdoors` = factor(survey_fresh$`Lockdown time outdoors`) 
+survey_fresh$`Lockdown time exercising` = factor(survey_fresh$`Lockdown time exercising`) 
+survey_fresh$`Income` = factor(survey_fresh$`Income`) 
+str(survey_fresh)
+
+# as.factor(survey_fresh$`Lockdown time outdoors`) 
+# as.factor(survey_fresh$`Opinion on lockdown`)
+```
+
+```{r}
+head(survey_fresh,7)
+```
+``` {r}
+head(survey)
+```
+
+```{r}
+  # filter(`Age` < 110, `Hours technology` < 84, `Exercise hours` <84) 
+```
+```{r}
+
+```
+```{r}
+library(tidyverse)
+
+ggplot(survey_fresh, aes(x=`Lockdown time outdoors`, y= `Opinion on lockdown`)) + geom_point() 
+
+
+ggplot(survey_fresh, aes(x = `Lockdown time outdoors`, fill = `Opinion on lockdown`)) + 
+  geom_boxplot() 
+
+#facet_wrap(~`Opinion on lockdown`, ncol = 1)
+
+ggplot(survey_fresh, aes(x = `Lockdown time outdoors`)) + 
+  geom_boxplot(aes(fill=`Opinion on lockdown`)) 
+
+```
+
+```{r}
+library(ggplot2)
+
+ggplot(survey_fresh, aes(x = `Opinion on lockdown`)) + 
+  geom_bar(aes(fill=`Lockdown time outdoors`)) +
+  labs()
+
+ggplot(survey_fresh, aes(x = `Opinion on lockdown`)) + 
+  geom_bar(aes(fill=`Lockdown time exercising`)) +
+  labs()
+
+ggplot(survey_fresh, aes(x = `Low mood`)) + 
+  geom_bar(aes(fill=`Opinion on lockdown`)) +
+  labs()
+
+ggplot(survey_fresh, aes(x = `Happy mood`)) + 
+  geom_bar(aes(fill=`Opinion on lockdown`)) +
+  labs()
+
+ggplot(survey_fresh, aes(x = `Income`)) + 
+  geom_bar(aes(fill=`Opinion on lockdown`)) +
+  labs()
+
+ggplot(survey_fresh, aes(x = `Low mood`)) + 
+  geom_histogram(aes(fill=`Income`)) +
+  labs()
+
+ggplot(survey_fresh, aes(x = `Happy mood`)) + 
+  geom_histogram(aes(fill=`Income`)) +
+  labs()
+
+ggplot(survey_fresh, aes(x = `Low mood`)) + 
+  geom_histogram(aes(fill=`Lockdown time outdoors`)) +
+  labs()
+
+ggplot(survey_fresh, aes(x = `Low mood`, y = `Happy mood`)) + 
+  geom_point(colour = survey_fresh$`Lockdown time exercising`, shape = survey_fresh$`Lockdown time outdoors`) +
+  labs()
+
+ggplot(survey_fresh, aes(x = `Lockdown time outdoors`, y = `Low mood` )) + 
+  geom_boxplot() + scale_y_log10() +
+  labs()
+
+ggplot(survey_fresh, aes(x = `Lockdown time outdoors`, y = `Happy mood` )) + 
+  geom_boxplot() + scale_y_log10() +
+  labs()
+
+ggplot(survey_fresh, aes(x = `Lockdown time outdoors`, y = `Age` )) + 
+  geom_boxplot() + scale_y_log10() +
+  labs()
+
+ggplot(survey_fresh, aes(x = `Lockdown time outdoors`, y = survey_fresh$`Hours technology` )) + 
+  geom_boxplot() + scale_y_log10() +
+  labs()
+
+```
