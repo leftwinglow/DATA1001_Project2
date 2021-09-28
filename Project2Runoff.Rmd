@@ -1,0 +1,12 @@
+---
+title: "Project 2 Runoff"
+output: html_document
+---
+```{r}
+survey_fresh %>%  # Using the olympics data, I want to...
+  filter(`Hours technology` < 20) %>%  # filter rows where Year is bigger than 1927, then 
+  # select(`Lockdown time outdoors`, `Hours technology`) %>% # select only these columns of interest, then
+  ggplot(aes(x = `Lockdown time outdoors`, y = `Hours technology`)) +  # plot in ggplot2
+  geom_point() +
+  geom_smooth(method = "lm")
+```

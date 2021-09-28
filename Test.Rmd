@@ -1,0 +1,37 @@
+---
+title: "Test"
+output: html_document
+---
+
+```{r}
+
+survey = read.csv("DATA1001-survey-altered.csv")
+
+library(tidyverse)
+library(ggplot2)
+library(wesanderson)
+
+survey_fresh = survey %>%
+                    rename(
+                      `Age` = 2,
+                      `LGA` = 3,
+                      `Opinion on lockdown` = 4,
+                      `Following rules` = 5,
+                      `Cohabitation` = 6,
+                      `Income` = 7,
+                      `Lockdown time outdoors` = 8, 
+                      `Lockdown time exercising` = 9,
+                      `Exercise hours` = 10,
+                      `Low mood` = 11,
+                      `Happy mood` = 12,
+                      `Hours technology` = 13
+                       )
+
+
+
+ggplot(survey_fresh)
+ aes(x = `Exercise hours`, y = `Low mood`, color = `Happy mood`) + 
+   geom_point() +
+   geom_smooth(method = "lm") +
+   scale_color_manual(values = c("blue", "orange", "magenta", "yellow", "red", "plum"))
+```

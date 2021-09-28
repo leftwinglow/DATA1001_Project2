@@ -14,46 +14,161 @@ output:
 ---
 
 ```{r, echo = F}
+library(ggthemes)
 ```
 
 ```{r, message = F}
 # Cleaned our data
 
-survey = read.csv("DATA1001_survey.csv")
+survey = read.csv("DATA1001-survey-altered.csv")
 
 library(tidyverse)
 
 survey_fresh = survey %>%
                     rename(
-                    
                       `Age` = 2,
                       `LGA` = 3,
                       `Opinion on lockdown` = 4,
-                      `Rule adherance` = 5,
+                      `Following rules` = 5,
                       `Cohabitation` = 6,
                       `Income` = 7,
-                      `Lockdown time spent outdoors` = 8, 
-                      `Lockdown time spent exercising` = 9,
-                      `Low mood` = 10,
-                      `Happy mood` = 11,
-                      `Hours technology` = 12
-                       ) 
+                      `Lockdown time outdoors` = 8, 
+                      `Lockdown time exercising` = 9,
+                      `Exercise hours` = 10,
+                      `Low mood` = 11,
+                      `Happy mood` = 12,
+                      `Hours technology` = 13
+                       )
 
 ```
 
 ```{r}
-str(survey_fresh)
+# str(survey_fresh)
 ```
 
 ```{r}
 library(ggplot2)
 
-ex = survey_fresh$"Hours technology"
-lm = survey_fresh$"Happy mood"
-
-ggplot(survey_fresh, aes(x = lm, y = ex)) +
+ggplot(survey_fresh, aes(x = survey_fresh$"Happy mood", y = survey_fresh$"Hours technology")) +
   geom_point()
 ```
 
+```{r}
+library(wesanderson)
 
+ggplot(survey_fresh, aes(x = `Age`, y = `Exercise hours`)) + 
+  geom_point() +
+  labs() +
+  geom_smooth(method = "lm")
+
+
+cor(survey_fresh$`Age`,survey_fresh$`Exercise hours`)
+
+# ggplot(survey_fresh, aes(x = `Exercise hours`, y = `Low mood`, color = as.factor(`Opinion on lockdown`))) + 
+#   geom_point() +
+#   geom_smooth(color = wes_palette(n = 1, "GrandBudapest1"), method = "lm", se=FALSE, aes(color = NULL)) +
+#   scale_color_manual(values = wes_palette(n = 5, "GrandBudapest2", type = "continuous")) +
+#   geom_count() +
+#   labs(
+#     title = "Weekly Exercise and Mood",
+#     x = "Weekly Exercise (Hours)",
+#     y = "Low mood (Days / week)",
+#     color = "Opinion on Lockdown\n(1-5, Linkert Scale)"
+#   )
+
+ggplot(survey_fresh, aes(x = `Exercise hours`, y = `Low mood`, color = "GrandBudapest1")) + 
+  guides(color = FALSE) +
+  geom_point() +
+  geom_smooth(color = wes_palette(n = 1, "GrandBudapest1"), method = "lm", se=FALSE) +
+  theme_classic() +
+  geom_jitter() +
+  labs(
+    title = "Weekly Exercise and Mood",
+    x = "Weekly Exercise (Hours)",
+    y = "Low mood (Days / week)",
+    color = "Opinion on Lockdown\n(1-5, Linkert Scale)"
+  )
+
+cor(survey_fresh$`Exercise hours`,survey_fresh$`Low mood`)
+
+R1 = lm(survey_fresh$`Exercise hours` ~ survey_fresh$`Low mood`)
+
+ggplot(survey_fresh, aes(y=R1$residuals, x=survey_fresh$`Low mood`)) +
+  geom_point() +
+  geom_hline(yintercept=0, colour = "aquamarine3", size = 1) +
+  theme_classic() +
+  labs (
+    title = "Residuals",
+    x = "Exercise hours",
+    y = "Low mood"
+  )
+
+lgavsexercise <- data.frame(x = survey_fresh$`LGA`, y = survey_fresh$`Exercise hours`)
+
+ggplot(lgavsexercise, aes(x,y, colour = survey_fresh$LGA))+
+  geom_boxplot( aes(fill = survey_fresh$LGA)) +
+  scale_y_log10() +
+  #facet_wrap(survey_fresh$Cohabitation)
+  theme_linedraw()+
+  labs()
+
+# ggplot(survey_fresh, aes(x = `Exercise hours`, y = `Low mood` )) +
+#   geom_point() +
+#   labs() +
+#   geom_smooth(method = "lm")
+```
+
+```{r}
+survey_fresh$`Following rules` = factor(survey_fresh$`Following rules`)
+
+ggplot(survey_fresh, aes(x = as.factor(`Opinion on lockdown`))) + 
+  geom_bar(aes(fill=`Following rules`)) +
+  labs()
+
+ggplot(survey_fresh, aes(x = `Opinion on lockdown`, y = as.numeric(`Following rules`))) + 
+  geom_point() +
+  geom_jitter() +
+  geom_rangeframe() +
+  labs() +
+  geom_smooth(method = "lm")
+
+
+cor(survey_fresh$`Opinion on lockdown`,as.numeric(survey_fresh$`Following rules`))
+```
+
+```{r}
+library(dplyr)
+
+# LGA_Ranked <- 
+#   survey_fresh %>%
+#   mutate(new_x = case_when(
+#   x == `LGA of "concern"`  ~ 0,
+#   x == `Greater Sydney`  ~ 1,
+#   x == `Regional or Rural NSW`” ~ 2,
+#   x == `strongly agree` ~ 3,
+#   TRUE   ~ NA_real))
+
+Ranked_LGA<-recode(survey_fresh$`LGA`, 'LGA of "concern"'=0, 'Greater Sydney'=1, 'Regional or Rural NSW'=2, 'International'=3)
+Ranked_LGA
+
+
+ggplot(survey_fresh, aes(x = `Lockdown time exercising`, y = as.numeric(`Low mood`))) + 
+  geom_point() +
+  facet_wrap(~`LGA`) + 
+  geom_jitter() +
+  geom_rangeframe() +
+  labs() +
+  geom_smooth(method = "lm")
+
+
+cor(survey_fresh$`Opinion on lockdown`,as.numeric(survey_fresh$`Following rules`))
+```
+
+# Premises
+## Strongly correlated - As weekly exercise declines, days of low mood increases - Vice versa for happy mood
+## Those in LGAs of concern will show the greatest exercise decline of all locales
+# Hence, those in LGAs of concern are the least happy during lockdown
+
+
+# As opinion on lockdown increases, as does rule-following
 

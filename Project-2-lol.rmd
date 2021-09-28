@@ -4,12 +4,12 @@ output: html_document
 ---
 
 ```{r}
-survey_fresh = read.csv("DATA1001_survey.csv")
+survey_fresh = read.csv("DATA1001-survey-altered.csv")
 str(survey_fresh)
 ```
 
 ```{r, message = F}
-survey = read.csv("DATA1001_survey.csv")
+survey = read.csv("DATA1001-survey-altered.csv")
 #str(survey)
 
 library(tidyverse)
@@ -31,7 +31,7 @@ survey_fresh = survey %>%
                        ) 
 
 survey_fresh$`Opinion on lockdown` = factor(survey_fresh$`Opinion on lockdown`)
-survey_fresh$`Lockdown time outdoors` = factor(survey_fresh$`Lockdown time outdoors`) 
+# survey_fresh$`Lockdown time outdoors` = factor(survey_fresh$`Lockdown time outdoors`) 
 survey_fresh$`Lockdown time exercising` = factor(survey_fresh$`Lockdown time exercising`) 
 survey_fresh$`Income` = factor(survey_fresh$`Income`) 
 str(survey_fresh)
@@ -48,8 +48,10 @@ head(survey)
 ```
 
 ```{r}
-  # filter(`Age` < 110, `Hours technology` < 84, `Exercise hours` <84) 
+# filter(a < 110, `Hours technology` < 84, `Exercise hours` <84, `Hours technology` < 40) 
+
 ```
+
 ```{r}
 
 ```
@@ -123,5 +125,21 @@ ggplot(survey_fresh, aes(x = `Lockdown time outdoors`, y = `Age` )) +
 ggplot(survey_fresh, aes(x = `Lockdown time outdoors`, y = survey_fresh$`Hours technology` )) + 
   geom_boxplot() + scale_y_log10() +
   labs()
+
+# as.numeric(survey_fresh$`Hours technology`)
+# 
+# a <- filter(survey_fresh, `Hours technology` < 40)
+# 
+# ggplot(survey_fresh, aes(x = `Lockdown time outdoors`, y = survey_fresh$`a` )) + 
+#   geom_point() +
+#   labs()
+
+survey_fresh %>%  # Using the olympics data, I want to...
+  filter(`Hours technology` < 20) %>%  # filter rows where Year is bigger than 1927, then 
+  # select(`Lockdown time outdoors`, `Hours technology`) %>% # select only these columns of interest, then
+  ggplot(aes(x = `Lockdown time outdoors`, y = `Hours technology`)) +  # plot in ggplot2
+  geom_point() +
+  geom_smooth(method = "lm")
+
 
 ```

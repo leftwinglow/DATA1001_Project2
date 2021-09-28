@@ -1,0 +1,161 @@
+---
+title: "Investigating the impact of lockdown on lifestyle "
+author: "SID1 SID2 SID3 SI4 SID5"
+subtitle: "Subject Matter"
+date: "University of Sydney | Day Month 2021"
+output:
+  html_document:
+    fig_caption: yes
+    number_sections: yes
+    self_contained: yes
+    theme: flatly
+    toc: true
+    toc_depth: 3
+    toc_float: true
+    code_folding: hide
+---
+
+<br>
+
+# Executive Summary
+
+
+
+<br>
+
+# Full Report
+
+
+## Initial Data Analysis (IDA)
+
+```{r}
+# LOAD DATA
+survey1 = read.csv("DATA1001-survey-altered.csv")
+#str(survey)
+
+library(tidyverse)
+
+survey_fresh = survey1 %>%
+                    rename(
+                      `Age` = 2,
+                      `LGA` = 3,
+                      `Opinion on lockdown` = 4,
+                      `Following rules` = 5,
+                      `Cohabitation` = 6,
+                      `Income` = 7,
+                      `Lockdown time outdoors` = 8, 
+                      `Lockdown time exercising` = 9,
+                      `Exercise hours` = 10,
+                      `Low mood` = 11,
+                      `Happy mood` = 12,
+                      `Hours technology` = 13
+                       )
+
+head(survey_fresh, 5)
+tail(survey_fresh, 5)
+str(survey_fresh)
+
+opinionvsrule <- data.frame(x = survey_fresh$`Opinion on lockdown`, y = survey_fresh$`Following rules`)
+library(ggplot2)
+library(wesanderson)
+
+#Defining x and y 
+ggplot(opinionvsrule, aes(x,y))+
+  geom_point()
+
+#models
+## linear
+model_linear <- lm(y~x, data=opinionvsrule)
+
+# plotting
+##basic linear
+ggplot(opinionvsrule , aes(x, y)) +
+  geom_point() +
+  geom_line(y = predict(model_linear))
+
+##loess
+library(wesanderson)
+gb <- wes_palette("GrandBudapest1")
+ggplot(opinionvsrule, aes(x, y)) +
+  geom_point() +
+  geom_smooth(method="loess",colour = "green")
+
+ggplot(opinionvsrule, aes(x, y)) +
+  geom_point(colour = "blue") +
+  geom_smooth(method="lm",colour = "green")
+  
+#facet_grid(survey_fresh$`Lockdown time outdoors`)
+
+
+
+``` 
+```{r}
+# x and y values
+opvshap <- data.frame(x = survey_fresh$`Opinion on lockdown`, y = survey_fresh$`Happy mood`)
+
+#plot
+
+ggplot(opvshap, aes(x, y)) +
+  geom_point() +
+  geom_smooth(method="lm",colour = "green")
+
+#Negative correlation!!! less exercise equates to higher average days feeling low
+# x and y values
+exvslow <- data.frame(x = survey_fresh$`Exercise hours`, y = survey_fresh$`Low mood`)
+
+#plot
+
+ggplot(exvslow, aes(x, y)) +
+  geom_point() +
+  geom_smooth(method="lm",colour = "green")
+
+#in reverse
+# x and y values
+lowvsex <- data.frame(x = survey_fresh$`Low mood`, y = survey_fresh$`Exercise hours`)
+
+#plot
+
+ggplot(lowvsex, aes(x, y)) +
+  geom_point() +
+  geom_smooth(method="lm",colour = "green")
+
+#happy mood and time outdoors
+
+outvshap <- data.frame(x = survey_fresh$`Happy mood`, y = survey_fresh$`Exercise hours`)
+
+ggplot(outvshap, aes(x,y, colour = survey_fresh$LGA))+
+  geom_point(aes(fill = survey_fresh$LGA)) +
+  geom_smooth(method= "lm", colour = "green")
+
+#plot
+
+```
+```{r}
+```
+## Summary:
+
+## Source:
+Data was collected via a google forms survey active between (add dates)
+
+## Structure:
+- brief summary of variable and types of data collected (e.g numeric/factor ect)
+
+
+## Research Question(s)
+
+<br>
+
+## Articles
+
+<br>
+
+## References
+Use APA
+
+<br>
+
+## Acknowledgments
+When did you team meet (date and time), and what did each team member contribute?
+
+
+
