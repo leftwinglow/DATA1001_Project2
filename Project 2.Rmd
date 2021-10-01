@@ -14,7 +14,10 @@ output:
 ---
 
 ```{r, echo = F}
+library(tidyverse)
 library(ggthemes)
+library(wesanderson)
+library(ggplot2)
 ```
 
 ```{r, message = F}
@@ -22,48 +25,25 @@ library(ggthemes)
 
 survey = read.csv("DATA1001-survey-altered.csv")
 
-library(tidyverse)
-
 survey_fresh = survey %>%
                     rename(
-                      `Age` = 2,
-                      `LGA` = 3,
-                      `Opinion on lockdown` = 4,
-                      `Following rules` = 5,
-                      `Cohabitation` = 6,
-                      `Income` = 7,
-                      `Lockdown time outdoors` = 8, 
-                      `Lockdown time exercising` = 9,
-                      `Exercise hours` = 10,
-                      `Low mood` = 11,
-                      `Happy mood` = 12,
-                      `Hours technology` = 13
+                      `Age` = 1,
+                      `LGA` = 2,
+                      `Opinion on lockdown` = 3,
+                      `Following rules` = 4,
+                      `Cohabitation` = 5,
+                      `Income` = 6,
+                      `Lockdown time outdoors` = 7, 
+                      `Lockdown time exercising` = 8,
+                      `Exercise hours` = 9,
+                      `Low mood` = 10,
+                      `Happy mood` = 11,
+                      `Hours technology` = 12
                        )
 
 ```
 
 ```{r}
-# str(survey_fresh)
-```
-
-```{r}
-library(ggplot2)
-
-ggplot(survey_fresh, aes(x = survey_fresh$"Happy mood", y = survey_fresh$"Hours technology")) +
-  geom_point()
-```
-
-```{r}
-library(wesanderson)
-
-ggplot(survey_fresh, aes(x = `Age`, y = `Exercise hours`)) + 
-  geom_point() +
-  labs() +
-  geom_smooth(method = "lm")
-
-
-cor(survey_fresh$`Age`,survey_fresh$`Exercise hours`)
-
 # ggplot(survey_fresh, aes(x = `Exercise hours`, y = `Low mood`, color = as.factor(`Opinion on lockdown`))) + 
 #   geom_point() +
 #   geom_smooth(color = wes_palette(n = 1, "GrandBudapest1"), method = "lm", se=FALSE, aes(color = NULL)) +
@@ -75,7 +55,9 @@ cor(survey_fresh$`Age`,survey_fresh$`Exercise hours`)
 #     y = "Low mood (Days / week)",
 #     color = "Opinion on Lockdown\n(1-5, Linkert Scale)"
 #   )
+```
 
+```{r}
 ggplot(survey_fresh, aes(x = `Exercise hours`, y = `Low mood`, color = "GrandBudapest1")) + 
   guides(color = FALSE) +
   geom_point() +
@@ -102,7 +84,39 @@ ggplot(survey_fresh, aes(y=R1$residuals, x=survey_fresh$`Low mood`)) +
     x = "Exercise hours",
     y = "Low mood"
   )
+```
 
+```{r}
+ggplot(survey_fresh, aes(x = `Exercise hours`, y = `Happy mood`, color = "GrandBudapest1")) + 
+  guides(color = FALSE) +
+  geom_point() +
+  geom_smooth(color = wes_palette(n = 1, "GrandBudapest1"), method = "lm", se=FALSE) +
+  theme_classic() +
+  geom_jitter() +
+  labs(
+    title = "Weekly Exercise and Mood",
+    x = "Weekly Exercise (Hours)",
+    y = "Happy Mood (Days / week)",
+    color = "Opinion on Lockdown\n(1-5, Linkert Scale)"
+  )
+
+cor(survey_fresh$`Exercise hours`,survey_fresh$`Happy mood`)
+
+R1 = lm(survey_fresh$`Exercise hours` ~ survey_fresh$`Happy mood`)
+
+ggplot(survey_fresh, aes(y=R1$residuals, x=survey_fresh$`Happy mood`)) +
+  geom_point() +
+  geom_hline(yintercept=0, colour = "aquamarine3", size = 1) +
+  theme_classic() +
+  labs (
+    title = "Residuals",
+    x = "Exercise hours",
+    y = "Happy Mood"
+  )
+```
+
+
+```{r}
 lgavsexercise <- data.frame(x = survey_fresh$`LGA`, y = survey_fresh$`Exercise hours`)
 
 ggplot(lgavsexercise, aes(x,y, colour = survey_fresh$LGA))+
