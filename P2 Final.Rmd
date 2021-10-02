@@ -21,8 +21,6 @@ library(ggplot2)
 ```
 
 ```{r, message = F}
-# Cleaned our data
-
 survey = read.csv("P2 Final.csv")
 
 survey_fresh = survey %>%
