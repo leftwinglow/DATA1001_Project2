@@ -21,6 +21,7 @@ library(ggplot2)
 ```
 
 ```{r, message = F}
+<<<<<<< Updated upstream
 # Cleaned our data
 
 survey = read.csv("P2 Final.csv")
@@ -40,8 +41,31 @@ survey_fresh = survey %>%
                       `Happy mood` = 11,
                       `Hours technology` = 12
                        )
+=======
+survey = read.csv("DATA1001 survey.csv")
+str(survey)
 
-```
+library(tidyverse)
+
+survey_fresh = survey %>%
+                    rename(
+                      `Age` = 2,
+                      `LGA` = 3,
+                      `opinion on lockdown` = 4,
+                      `following rules` = 5,
+                      `Cohabitation` = 6,
+                      `Income` = 7,
+                      `Lockdown time spent outdoors` = 8, 
+                      `Lockdown time spent exercising` = 9,
+                      `Lockdown hours of exercising` = 10,
+                      `Low mood` = 11,
+                      `Happy mood` = 12,
+                      `Hours technology` = 13
+                       ) %>%
+                    filter(`Age` < 110, `Lockdown hours of exercising` < 84, `Hours technology` < 84)
+str(survey_fresh)
+>>>>>>> Stashed changes
+
 
 ```{r}
 # ggplot(survey_fresh, aes(x = `Exercise hours`, y = `Low mood`, color = as.factor(`Opinion on lockdown`))) + 
@@ -58,6 +82,7 @@ survey_fresh = survey %>%
 ```
 
 ```{r}
+<<<<<<< Updated upstream
 ggplot(survey_fresh, aes(x = `Exercise hours`, y = `Low mood`, color = "GrandBudapest1")) + 
   guides(color = FALSE) +
   geom_point() +
@@ -72,6 +97,14 @@ ggplot(survey_fresh, aes(x = `Exercise hours`, y = `Low mood`, color = "GrandBud
   )
 
 cor(survey_fresh$`Exercise hours`,survey_fresh$`Low mood`)
+=======
+
+
+```
+``` {r}
+
+```
+>>>>>>> Stashed changes
 
 R1 = lm(survey_fresh$`Exercise hours` ~ survey_fresh$`Low mood`)
 
